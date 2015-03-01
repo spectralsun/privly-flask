@@ -23,6 +23,6 @@ before_script:
 - cp config.py.dist config.py
 - python manage.py init_db
 - python manage.py seed_db
-- python manage.py runserver
+- python manage.py runserver > /dev/null 2>&1 &
 addons:
   sauce_connect: true
