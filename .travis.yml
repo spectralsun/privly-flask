@@ -1,0 +1,22 @@
+before_install:
+- git submodule update --init --recursive
+language: python
+python:
+- "2.6"
+install: "pip install -r requirements.txt"
+env:
+  global:
+  - DB=sqlite
+  - TRAVIS_LAUNCHES_SAUCE_CONNECT=true # Tell the karma file that it does not need to launch Sauce connect
+script:
+- nosetests
+- cd pyvly/static/privly-applications # Run the selenium tests
+- "if [ ${TRAVIS_PULL_REQUEST} = 'false' ]; then bundle exec ruby test/selenium/run_all.rb -p sauce_firefox_web -r experimental -c http://localhost:3000; fi" # Don't run on pull requests
+- "if [ ${TRAVIS_PULL_REQUEST} = 'false' ]; then bundle exec ruby test/selenium/run_all.rb -p sauce_chrome_web -r experimental -c http://localhost:3000; fi" # Don't run on pull requests
+before_script:
+- cp config.py.dist config.py
+- python manage.py init_db 
+- python manage.py seed_db
+- python manage.py runserver
+addons:
+  sauce_connect: true
