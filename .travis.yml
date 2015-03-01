@@ -24,5 +24,6 @@ before_script:
 - python manage.py init_db
 - python manage.py seed_db
 - python manage.py runserver > /dev/null 2>&1 &
+- cd pyvly/static/privly-applications/test/; bundle install
 addons:
   sauce_connect: true
