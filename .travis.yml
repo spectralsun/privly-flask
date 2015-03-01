@@ -2,20 +2,26 @@ before_install:
 - git submodule update --init --recursive
 language: python
 python:
-- "2.7"
-install: "pip install -r requirements.txt"
+- '2.7'
+install: pip install -r requirements.txt
 env:
   global:
   - DB=sqlite
   - TRAVIS_LAUNCHES_SAUCE_CONNECT=true # Tell the karma file that it does not need to launch Sauce connect
+  - secure: gHL8siU/QLCMHXg/N3ncgISqrxsuvxfTklNfH+x/St/aqadKorIUMTpxcjJX4uHbp8SdYnlOm5LbAM21t9kRwYdEK0td7LTRGWmPY03Kd4KvZTzJ/ad6RNt57LE5i7rrMfeo51JYosDD+d/PS1K99lw/NudVq2yWbnAzdVSN+a0=#SAUCE_USERNAME=spectralsun(spectralsun/privly-flask)
+  - secure: Y02HyfY499+5mNW02sNGbcA+F6yqzcVPgyyudjV0FUuYTtTGa/3dcgbsvEFdvYDxkkmnakCKtMv6Lap/J4nn72KLDgJ0hWY6TYUs7lhhSv/P+C+TwPbXgirTonFYxv2iE1nlomoikwbddxs3DNqhQJE5xmAugM10+zJ0biDVPVM=#SAUCE_ACCESS_KEY=********-****-****-****-************(spectralsun/privly-flask)
+  - secure: VoML2XFSNXJV8eHEJ2UOanW2kPW0tFXEysKW2lUYAoPAq6qQMu/cCQ+BeLVwDJt1U1VC/45FOCn/vOo5TVlmr7v/eX2xn+Y1WFYpK28kvR8wTSbQtFlbzJPeYBQmQSwrwvhYCfo/rj4F/58m0MyAZljkR2g4V70z5+mDAsHA59k=#SAUCE_URL=https://spectralsun:********-****-****-****-************@saucelabs.com/rest/v1/users/spectralsun (spectralsun/privly-flask)
+  - secure: N6HbtOqRV9rz39uAZiO96Q5Fktelzp+dM6ZFsIMK+wp5gqjANI9dtxAfbeboKle2YkcyyT8a6UnIjL7Pd/tpslmJ4hlLMHTHlThxwTah1gPniYaQJQs+R48DlK8a5pvEx3P2mm0wW6T4Cp0rkToAJKwQ/3eaRHjOor233XKMcO8=#SAUCE_USERNAME=spectralsun(privly/privly-flask)
+  - secure: BdM87kbq4b4zQcnDoxMIv6jGi7FoUFqQHJTBxQmFePP11x4qVaes2RKHzig6wUY/+6Qlu+eIWhj6QL7DxmMpOsOc17WH0hr3GwPkGvw7BdDVbJhf4o9OdRDm0G+L9wm6941zdD7G4jZzrvvq+HAu4aONKI4QtPzLsWRk9wGIrtE=#SAUCE_ACCESS_KEY=********-****-****-****-************(privly/privly-flask)
+  - secure: M7aaVRDkm808ryeS/UStp5HLyXm/44mSwsYiRTSMLWCLAH6pRPP8SnSSalGVNLhVoZXHy5y2EoMISelrFRTg9VLJFaAgmLCZ2ZOFXvgsPzyFiBrBhMF2sE9N95h3ntsaa8CZUAjKiPB/ksW7ai8pb+DnMxaJ22eANjIxI220bgc=#SAUCE_URL=https://spectralsun:********-****-****-****-************@saucelabs.com/rest/v1/users/spectralsun (privly/privly-flask)
 script:
-- nosetests
+- nosetests # Run the flask tests
 - cd pyvly/static/privly-applications # Run the selenium tests
 - "if [ ${TRAVIS_PULL_REQUEST} = 'false' ]; then bundle exec ruby test/selenium/run_all.rb -p sauce_firefox_web -r experimental -c http://localhost:3000; fi" # Don't run on pull requests
 - "if [ ${TRAVIS_PULL_REQUEST} = 'false' ]; then bundle exec ruby test/selenium/run_all.rb -p sauce_chrome_web -r experimental -c http://localhost:3000; fi" # Don't run on pull requests
 before_script:
 - cp config.py.dist config.py
-- python manage.py init_db 
+- python manage.py init_db
 - python manage.py seed_db
 - python manage.py runserver
 addons:
