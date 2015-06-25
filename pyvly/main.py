@@ -13,6 +13,13 @@ from pyvly.models import User
 app = Flask('pyvly', static_folder='static/privly-applications', 
     static_url_path='/apps')
 
+if os.environ.get('STREAM_HANDLER'):
+    import logging
+    from logging import StreamHandler
+    file_handler = StreamHandler()
+    app.logger.setLevel(logging.CRITICAL)  
+    app.logger.addHandler(file_handler)
+
 # Initialize CSRF protection of POST and DELETE requests
 csrf.init_app(app)
 
