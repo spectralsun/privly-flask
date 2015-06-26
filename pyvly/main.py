@@ -24,7 +24,10 @@ if os.environ.get('STREAM_HANDLER'):
 csrf.init_app(app)
 
 # Load the configuration
-app.config.from_object('config')
+try:
+    app.config.from_object('config')
+except:
+    app.config.from_object('configdist')
 
 # Initialize the login manager
 login_manager = LoginManager()
