@@ -1,8 +1,18 @@
+import os
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-from config import DATABASE_URL
+
+# Check for DATABASE_URL in environment, when present likely running on Heroku
+if os.environ.get('DATABASE_URL'):
+    DATABASE_URL = os.environ['DATABASE_URL']
+else:
+    try:
+        from config import DATABASE_URL
+    except:
+        from configdist import DATABASE_URL
 
 
 class BaseModel(object):
